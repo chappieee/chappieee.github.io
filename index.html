@@ -21,9 +21,9 @@
             refresh: {
                 refreshTargetId: '01',
             },
-            transactionProcessed: (isAutoClosedValue) => ({ 
-                msgTitle: '完了タイトル',
-                isAutoClosed: isAutoClosedValue,
+            transactionProcessed: (value) => ({ 
+                msgTitle: '完了タイトル2',
+                isAutoClosed: value,
                 callback: 'processedCallbackName',
                 msg: '完了メッセージ',
                 refreshTargetId: null,
