@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebView Test</title>
+    <script>
+        function postMessageToHandler(handlerName, message = undefined) {
+            if (window.webkit?.messageHandlers?.[handlerName]) {
+                window.webkit.messageHandlers[handlerName].postMessage(message);
+            } else {
+                console.log(`${handlerName} is not available.`);
+            }
+        }
+
+        const handlers = {
+            changeTitleCallbackHandler: 'MiscellaneousWebApp Title',
+            changeProgressCallbackHandler: (isShowing) => ({ progress: 0.25, isShowing }),
+            terminateWebViewCallbackHandler: undefined,
+            logOff: undefined,
+            refresh: {
+                refreshTargetId: '01',
+            },
+            transferAuthentication: {
+                callback: 'callback',
+            },
+            callSsaApi: {
+                url: '/v1/auth/send-phone-no',
+                jsonBody: '{}',
+                callback: 'callback',
+            },
+            errorMessage: {
+                title: 'エラータイトル',
+                msg: 'エラーメッセージ',
+                callbackName: 'callbackName',
+            },
+            openBrowser: {
+                url: 'https://www.team-lab.com',
+            },
+            transition: {
+                screenId: 'RS1900M01',
+            },
+            getConstants: 'callback',
+            openCallingScreen: (type) => ({ 
+                moduleName: type === 'account-close' ? type : `${type}-application`,
+            }),
+            SHA256Argument: (value) => ({ value, callback: 'callback' }),
+            setScreenName: {
+                screenId: 'RS4401S02',
+            },
+
+            transactionProcessed: {
+                msgTitle: 'ただいまお取扱いできません',
+                isAutoClosed: true,
+                callback: '{}',
+                msg: 'しばらくしてから、ご利用ください。',
+                refreshTargetId: null,
+            },
+        };
+
+        function invokeHandler(handlerName, arg) {
+            const message = typeof handlers[handlerName] === 'function'
+                ? handlers[handlerName](arg)
+                : handlers[handlerName];
+            postMessageToHandler(handlerName, message);
+        }
+    </script>
+</head>
+<body>
+    <h1>Misc WebView Handler</h1>
+    <ul>
+        <li><button onclick="invokeHandler('transactionProcessed')">Transaction Processed</button></li>
+        
+        <li><button onclick="invokeHandler('changeTitleCallbackHandler')">Change Title</button></li>
+        <li><button onclick="invokeHandler('changeProgressCallbackHandler', true)">Show Progress</button></li>
+        <li><button onclick="invokeHandler('changeProgressCallbackHandler', false)">Hide Progress</button></li>
+        <li><button onclick="invokeHandler('terminateWebViewCallbackHandler')">Terminate WebView</button></li>
+        <li><button onclick="invokeHandler('logOff')">Log Off</button></li>
+        <li><button onclick="invokeHandler('refresh')">Refresh</button></li>
+        <li><button onclick="invokeHandler('transferAuthentication')">Transfer Authentication</button></li>
+        <li><button onclick="invokeHandler('callSsaApi')">Call SSA API</button></li>
+        <li><button onclick="invokeHandler('errorMessage')">Error Message</button></li>
+        <li><button onclick="invokeHandler('openBrowser')">Open Browser</button></li>
+        <li><button onclick="invokeHandler('transition')">Transition Club Point</button></li>
+        <li><button onclick="invokeHandler('getConstants')">Get Constants</button></li>
+        <li><button onclick="invokeHandler('openCallingScreen', 'loss')">Open Calling Screen (Loss)</button></li>
+        <li><button onclick="invokeHandler('openCallingScreen', 'damage')">Open Calling Screen (Damage)</button></li>
+        <li><button onclick="invokeHandler('openCallingScreen', 'account-close')">Open Calling Screen (Account Close)</button></li>
+        <li><button onclick="invokeHandler('SHA256Argument', 'XXXXXX')">SHA256 Argument Success</button></li>
+        <li><button onclick="invokeHandler('SHA256Argument', '')">SHA256 Argument Fail</button></li>
+        <li><button onclick="invokeHandler('setScreenName')">Set Screen Name</button></li>
+    </ul>
+</body>
+</html>
