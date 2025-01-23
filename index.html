@@ -21,6 +21,13 @@
             refresh: {
                 refreshTargetId: '01',
             },
+            transactionProcessed: {
+                msgTitle: '完了ダイアログタイトル',
+                isAutoClosed: false,
+                callback: 'callbackName',
+                msg: '完了ダイアログメッセージ',
+                refreshTargetId: null,
+            },
             transferAuthentication: {
                 callback: 'callback',
             },
@@ -48,14 +55,6 @@
             setScreenName: {
                 screenId: 'RS4401S02',
             },
-
-            transactionProcessed: {
-                msgTitle: 'お申し込みを受付しました',
-                isAutoClosed: false,
-                callback: 'callbackName',
-                msg: '次へお進みください',
-                refreshTargetId: null,
-            },
         };
 
         function invokeHandler(handlerName, arg) {
@@ -68,14 +67,13 @@
 </head>
 <body>
     <h1>Misc WebView Handler</h1>
-    <ul>
-        <li><button onclick="invokeHandler('transactionProcessed')">Transaction Processed</button></li>
-        
+    <ul>        
         <li><button onclick="invokeHandler('changeTitleCallbackHandler')">Change Title</button></li>
         <li><button onclick="invokeHandler('changeProgressCallbackHandler', true)">Show Progress</button></li>
         <li><button onclick="invokeHandler('changeProgressCallbackHandler', false)">Hide Progress</button></li>
         <li><button onclick="invokeHandler('terminateWebViewCallbackHandler')">Terminate WebView</button></li>
         <li><button onclick="invokeHandler('logOff')">Log Off</button></li>
+        <li><button onclick="invokeHandler('transactionProcessed')">Transaction Processed</button></li>
         <li><button onclick="invokeHandler('refresh')">Refresh</button></li>
         <li><button onclick="invokeHandler('transferAuthentication')">Transfer Authentication</button></li>
         <li><button onclick="invokeHandler('callSsaApi')">Call SSA API</button></li>
